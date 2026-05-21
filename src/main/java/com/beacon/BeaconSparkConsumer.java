@@ -2,6 +2,7 @@ package com.beacon;
 
 import com.beacon.config.SparkConfig;
 import com.beacon.processor.TransactionProcessor;
+import com.beacon.processor.TransactionProcessorPostgres;
 import org.apache.spark.sql.SparkSession;
 import org.apache.spark.sql.streaming.StreamingQuery;
 import org.slf4j.Logger;
@@ -23,7 +24,7 @@ public class BeaconSparkConsumer {
 
         SparkSession spark = SparkConfig.createSession();
 
-        TransactionProcessor processor = new TransactionProcessor(
+        TransactionProcessorPostgres processor = new TransactionProcessorPostgres(
                 spark,
                 kafkaServers,
                 kafkaTopic
