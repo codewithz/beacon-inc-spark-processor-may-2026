@@ -162,12 +162,34 @@ public class Lab01_CowWrites {
         System.out.println("        than PCL-MM-002. That is proof the upsert wrote a new version.\n");
     }
 
+    public static void writeBatch3(SparkSession spark) {
+        System.out.println("\n[Lab 02 setup] Writing batch 3 — 2 more records...");
+
+        List<Row> batch3 = Arrays.asList(
+                // UPDATE: PCL-BGC-001 — now validated
+                RowFactory.create("PCL-BGC-001","TXN-005","TITLE_REGISTRATION","CONDO","BGC",
+                        "Metro Manila","Carlos Mendoza","Horizon Dev",6_500_000.0,"PHP",
+                        "APPROVED","VALID","2024-01-15T11:00:00"),
+                // INSERT: new Pasig parcel
+                RowFactory.create("PCL-PS-001","TXN-007","LEASE","COMMERCIAL","Pasig",
+                        "Metro Manila","Ramon Torres","Pacific Homes",1_800_000.0,"PHP",
+                        "PENDING","PENDING","2024-01-15T11:05:00")
+        );
+
+        spark.createDataFrame(batch3, schema())
+                .write().format("hudi").options(hudiOptions())
+                .mode("append").save(BASE_PATH);
+
+        System.out.println("✅ Batch 3 written. Table now has 3 commits.\n");
+    }
+
     // ── Main ───────────────────────────────────────────────────────────────
     public static void main(String[] args) throws Exception {
         SparkSession spark = SparkConfig.createSession("Lab01-CowWrites");
 
         exerciseA(spark);  // First write — all inserts
         exerciseB(spark);  // Second write — updates + new insert
+        writeBatch3(spark); // Write batch 3 for Lab 02 setup
         exerciseC(spark);  // Inspect timeline metadata
 
         spark.stop();
