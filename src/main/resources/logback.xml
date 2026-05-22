@@ -2,7 +2,7 @@
 
     <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
         <encoder>
-            <pattern>%cyan(%d{HH:mm:ss.SSS}) %highlight(%-5level) [%thread] %yellow(%logger{20}) - %msg%n</pattern>
+            <pattern>%cyan(%d{dd/MM/yy HH:mm:ss}) %highlight(%-5level) %yellow(%logger{20}) - %msg%n</pattern>
         </encoder>
     </appender>
 
@@ -11,25 +11,52 @@
         <appender-ref ref="CONSOLE" />
     </logger>
 
-    <!-- Hudi — only warnings -->
+    <!-- Hudi — only WARN and above -->
     <logger name="org.apache.hudi" level="WARN" additivity="false">
         <appender-ref ref="CONSOLE" />
     </logger>
 
-    <!-- Spark internals — only errors -->
+    <!-- Spark internals — only ERROR -->
     <logger name="org.apache.spark" level="ERROR" additivity="false">
         <appender-ref ref="CONSOLE" />
     </logger>
-
-    <logger name="org.apache.hadoop" level="ERROR" additivity="false">
-        <appender-ref ref="CONSOLE" />
-    </logger>
-
     <logger name="org.sparkproject" level="ERROR" additivity="false">
         <appender-ref ref="CONSOLE" />
     </logger>
 
-    <!-- Root — warn for everything else -->
+    <!-- Hadoop/HDFS — only ERROR -->
+    <logger name="org.apache.hadoop" level="ERROR" additivity="false">
+        <appender-ref ref="CONSOLE" />
+    </logger>
+
+    <!-- DAG/Task/Executor noise — silence completely -->
+    <logger name="org.apache.spark.scheduler" level="OFF" additivity="false"/>
+    <logger name="org.apache.spark.executor" level="OFF" additivity="false"/>
+    <logger name="org.apache.spark.storage" level="OFF" additivity="false"/>
+    <logger name="org.apache.spark.memory" level="OFF" additivity="false"/>
+    <logger name="org.apache.spark.broadcast" level="OFF" additivity="false"/>
+
+    <!-- Hudi internal noise — silence -->
+    <logger name="org.apache.hudi.client" level="WARN" additivity="false">
+        <appender-ref ref="CONSOLE" />
+    </logger>
+    <logger name="org.apache.hudi.metadata" level="ERROR" additivity="false">
+        <appender-ref ref="CONSOLE" />
+    </logger>
+    <logger name="org.apache.hudi.io" level="ERROR" additivity="false">
+        <appender-ref ref="CONSOLE" />
+    </logger>
+
+    <!-- Kafka client noise -->
+    <logger name="org.apache.kafka" level="WARN" additivity="false">
+        <appender-ref ref="CONSOLE" />
+    </logger>
+
+    <!-- Jetty / timeline server -->
+    <logger name="io.javalin" level="OFF" additivity="false"/>
+    <logger name="org.eclipse.jetty" level="OFF" additivity="false"/>
+
+    <!-- Root — catch anything else at WARN -->
     <root level="WARN">
         <appender-ref ref="CONSOLE" />
     </root>
