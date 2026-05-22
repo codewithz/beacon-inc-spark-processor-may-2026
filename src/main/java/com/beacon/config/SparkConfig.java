@@ -25,6 +25,15 @@ public class SparkConfig {
                         "org.apache.spark.sql.hudi.HoodieSparkSessionExtension")
                 .config("spark.sql.catalog.spark_catalog",
                         "org.apache.spark.sql.hudi.catalog.HoodieCatalog")
+                .config("spark.sql.streaming.checkpointLocation",
+                        "hdfs://localhost:8020/hudi/checkpoints/transactions")
+
+                // ── HDFS connection ────────────────────────────────────────────
+                .config("spark.hadoop.fs.defaultFS", HdfsConfig.NAMENODE_URI)
+
+                // ── HDFS client settings ───────────────────────────────────────
+                .config("spark.hadoop.dfs.client.use.datanode.hostname", "true")
+                .config("spark.hadoop.dfs.datanode.use.datanode.hostname", "true")
 
                 // ── Performance ────────────────────────────────────────────
                 .config("spark.sql.shuffle.partitions", "3")

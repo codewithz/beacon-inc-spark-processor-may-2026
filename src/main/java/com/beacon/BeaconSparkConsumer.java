@@ -1,5 +1,6 @@
 package com.beacon;
 
+import com.beacon.config.HdfsConfig;
 import com.beacon.config.SparkConfig;
 import com.beacon.processor.TransactionProcessor;
 import com.beacon.processor.TransactionProcessorPostgres;
@@ -18,16 +19,25 @@ public class BeaconSparkConsumer {
         String kafkaServers = System.getProperty("kafka.servers", "localhost:9092");
         String kafkaTopic   = System.getProperty("kafka.topic",   "beacon.property.transactions");
 
-        log.info("=== Beacon Spark Consumer Starting ===");
-        log.info("Kafka servers : {}", kafkaServers);
-        log.info("Kafka topic   : {}", kafkaTopic);
+        log.info("=== Beacon Spark Consumer — HDFS Mode ===");
+        log.info("Kafka  : {}  |  Topic: {}", kafkaServers, kafkaTopic);
+        log.info("HDFS   : {}", HdfsConfig.NAMENODE_URI);
+        log.info("Table  : {}", HdfsConfig.HUDI_BASE_PATH);
 
-        SparkSession spark = SparkConfig.createSession("Beacon Processor");
+//        SparkSession spark = SparkConfig.createSession("Beacon Processor");
+//
+//        TransactionProcessorPostgres processor = new TransactionProcessorPostgres(
+//                spark,
+//                kafkaServers,
+//                kafkaTopic
+//        );
 
-        TransactionProcessorPostgres processor = new TransactionProcessorPostgres(
-                spark,
-                kafkaServers,
-                kafkaTopic
+
+        // Use HDFS-configured SparkSession
+        SparkSession spark = SparkConfig.createSession("BeaconSparkConsumer");
+
+        TransactionProcessor processor = new TransactionProcessor(
+                spark, kafkaServers, kafkaTopic
         );
 
         StreamingQuery query = processor.start();
