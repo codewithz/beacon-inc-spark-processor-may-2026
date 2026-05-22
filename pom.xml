@@ -53,6 +53,26 @@
             <version>42.7.3</version>
         </dependency>
 
+        <!-- Apache Hudi — Spark 3.4 bundle -->
+        <dependency>
+            <groupId>org.apache.hudi</groupId>
+            <artifactId>hudi-spark3.4-bundle_2.12</artifactId>
+            <version>0.14.1</version>
+        </dependency>
+
+        <!-- Hadoop client — needed for filesystem access on Windows -->
+        <dependency>
+            <groupId>org.apache.hadoop</groupId>
+            <artifactId>hadoop-client</artifactId>
+            <version>3.3.4</version>
+            <exclusions>
+                <!-- Prevent SLF4J conflict with Spark's logger -->
+                <exclusion>
+                    <groupId>org.slf4j</groupId>
+                    <artifactId>slf4j-reload4j</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
     </dependencies>
 
     <build>

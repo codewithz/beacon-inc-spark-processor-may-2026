@@ -22,7 +22,7 @@ public class BeaconSparkConsumer {
         log.info("Kafka servers : {}", kafkaServers);
         log.info("Kafka topic   : {}", kafkaTopic);
 
-        SparkSession spark = SparkConfig.createSession();
+        SparkSession spark = SparkConfig.createSession("Beacon Processor");
 
         TransactionProcessorPostgres processor = new TransactionProcessorPostgres(
                 spark,

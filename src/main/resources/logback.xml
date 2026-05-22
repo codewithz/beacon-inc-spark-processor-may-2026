@@ -1,14 +1,37 @@
-
 <configuration>
+
     <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
         <encoder>
-            <pattern>
-                %cyan(%d{HH:mm:ss.SSS}) %highlight(%-5level) %magenta([%thread]) %yellow(%logger{15}) - %msg%n
-            </pattern>
+            <pattern>%cyan(%d{HH:mm:ss.SSS}) %highlight(%-5level) [%thread] %yellow(%logger{20}) - %msg%n</pattern>
         </encoder>
     </appender>
 
-    <root level="info">
+    <!-- Your code — show everything -->
+    <logger name="com.beacon" level="DEBUG" additivity="false">
+        <appender-ref ref="CONSOLE" />
+    </logger>
+
+    <!-- Hudi — only warnings -->
+    <logger name="org.apache.hudi" level="WARN" additivity="false">
+        <appender-ref ref="CONSOLE" />
+    </logger>
+
+    <!-- Spark internals — only errors -->
+    <logger name="org.apache.spark" level="ERROR" additivity="false">
+        <appender-ref ref="CONSOLE" />
+    </logger>
+
+    <logger name="org.apache.hadoop" level="ERROR" additivity="false">
+        <appender-ref ref="CONSOLE" />
+    </logger>
+
+    <logger name="org.sparkproject" level="ERROR" additivity="false">
+        <appender-ref ref="CONSOLE" />
+    </logger>
+
+    <!-- Root — warn for everything else -->
+    <root level="WARN">
         <appender-ref ref="CONSOLE" />
     </root>
+
 </configuration>
