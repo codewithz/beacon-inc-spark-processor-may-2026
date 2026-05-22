@@ -3,6 +3,7 @@ package com.beacon;
 import com.beacon.config.HdfsConfig;
 import com.beacon.config.SparkConfig;
 import com.beacon.processor.TransactionProcessor;
+import com.beacon.processor.TransactionProcessorHdfs;
 import com.beacon.processor.TransactionProcessorPostgres;
 import org.apache.spark.sql.SparkSession;
 import org.apache.spark.sql.streaming.StreamingQuery;
@@ -36,7 +37,7 @@ public class BeaconSparkConsumer {
         // Use HDFS-configured SparkSession
         SparkSession spark = SparkConfig.createSession("BeaconSparkConsumer");
 
-        TransactionProcessor processor = new TransactionProcessor(
+        TransactionProcessorHdfs processor = new TransactionProcessorHdfs(
                 spark, kafkaServers, kafkaTopic
         );
 

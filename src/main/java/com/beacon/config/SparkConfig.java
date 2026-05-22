@@ -27,6 +27,8 @@ public class SparkConfig {
                         "org.apache.spark.sql.hudi.catalog.HoodieCatalog")
                 .config("spark.sql.streaming.checkpointLocation",
                         "hdfs://localhost:8020/hudi/checkpoints/transactions")
+                .config("spark.hadoop.dfs.client.block.write.replace-datanode-on-failure.enable", "false")
+                .config("spark.hadoop.dfs.client.block.write.replace-datanode-on-failure.policy", "NEVER")
 
                 // ── HDFS connection ────────────────────────────────────────────
                 .config("spark.hadoop.fs.defaultFS", HdfsConfig.NAMENODE_URI)

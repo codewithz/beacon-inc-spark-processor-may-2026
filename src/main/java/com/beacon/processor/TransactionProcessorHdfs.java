@@ -125,6 +125,8 @@ public class TransactionProcessorHdfs {
         // ── HDFS-specific: disable Hive sync for POC ───────────────────────
         opts.put("hoodie.datasource.hive_sync.enable",            "false");
 
+        opts.put("hoodie.metadata.enable", "false");
+
         return opts;
     }
 }
